@@ -1,5 +1,6 @@
 import sys
 import matplotlib.pyplot as plt
+import matplotlib
 import numpy as np
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui
@@ -227,13 +228,13 @@ class Obsah(QMainWindow):
         self.textbox1 = QLineEdit(self)
         self.textbox1.move(70, 150)
         self.textbox1.resize(80,40)
-        a = str(self.textbox1.text())
+        self.a = str(self.textbox1.text())
         
 
         self.textbox2 = QLineEdit(self)
         self.textbox2.move(170, 150)
         self.textbox2.resize(80,40)
-        b = self.textbox2.text()
+        self.b = self.textbox2.text()
         
         push_equal = QPushButton("Vypocitat", self)
         push_equal.move(160, 210)
@@ -251,13 +252,6 @@ class Obsah(QMainWindow):
                                  "}")
 
         self.label.setFont(QFont('Arial', 15))
-
-        text = (a + " * " + b)
-        self.label.setText(str(text))
-
-        equation = self.label.text()
-        ans = eval(equation)
-        self.label.setText(str(ans))
 
         r_stvoruholnik = QRadioButton("Stvoruholnik", self)
         r_stvoruholnik.setGeometry(10, 10, 100, 40)
@@ -288,17 +282,21 @@ class Obsah(QMainWindow):
         push_klasicka = QPushButton("Klasicka", self)
         push_klasicka.setGeometry(365, 300, 80, 40)
         
-    
+
+        push_equal.clicked.connect(self.action_equal)
+
+
     def action_equal(self):
+        a = eval(self.textbox1.text())
+        b = eval(self.textbox2.text())
 
-        equation = self.label.text()
-
-        try:
-            ans = eval(equation)
-            self.label.setText(str(ans))
-
-        except:
-            self.label.setText("Wrong Input")
+        fig, ax = plt.subplots()
+        
+        rectangle = matplotlib.patches.Rectangle((0, 0), a, b, color = "blue")
+        ax.add_patch(rectangle)
+        
+        plt.show()
+        
 
     
 
